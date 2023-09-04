@@ -1,31 +1,46 @@
 
 package util;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
-import javax.validation.ConstraintViolationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.ErrorResponse;
-import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 /**
  * 
  * Exception handling
  *
  */
-@ControllerAdvice
-@ResponseBody
-public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
-	@ExceptionHandler(ConstraintViolationException.class)
-	public final ResponseEntity<ErrorResponse> handleConstraintViolation(ConstraintViolationException ex,
-			WebRequest request) {
-		List<String> details = ex.getConstraintViolations().parallelStream().map(e -> e.getMessage())
+
+@RestControllerAdvice
+public class GlobalExceptionHandler {
+    
+   private static final Logger LOGGER = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+
+
+   @ExceptionHandler(MethodArgumentNotValidException.class)
+	public ResponseEntity<Map<String, List<String>>> handleValidationErrors(MethodArgumentNotValidException ex) {
+
+		List<String> errors = ex.getBindingResult().getFieldErrors().stream().map(FieldError::getDefaultMessage)
 				.collect(Collectors.toList());
-		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>(getErrorsMap(errors), new HttpHeaders(), HttpStatus.BAD_REQUEST);
 	}
+
+   private Map<String, List<String>> getErrorsMap(List<String> errors) {
+       Map<String, List<String>> errorResponse = new HashMap<>();
+       errorResponse.put("errors", errors);
+       LOGGER.info("Bad request for the invalid input");
+       return errorResponse;
+   }
+
+    
 }

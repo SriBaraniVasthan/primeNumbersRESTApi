@@ -2,8 +2,9 @@ package com.primesAPI.rest.controller;
 
 import java.util.HashMap;
 import java.util.List;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
@@ -12,11 +13,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import com.primesAPI.rest.model.PrimeNumber;
+import com.primesAPI.rest.model.PrimeResponse;
 import com.primesAPI.rest.service.PrimesApiService;
+import jakarta.validation.Valid;
+import util.GlobalExceptionHandler;
+
+
 /*
  * Controller for the REST API
  */
@@ -31,6 +37,9 @@ public class PrimesApiController {
 	}
 
 	private List<Integer> resList;
+	private static final Logger LOGGER = LoggerFactory.getLogger(GlobalExceptionHandler.class);	
+	
+	PrimeResponse response;
 
 	@Autowired
 	private PrimesApiService apiServiceObj;
@@ -39,27 +48,35 @@ public class PrimesApiController {
 	 * GET API 
 	 */
 	@GetMapping(path = "/{number}", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
-	public ResponseEntity<Object> generatePrimesFunction(
-			@NotNull(message = "Input should not be blank.") @PathVariable("number") @Min(value = 1) Integer number,
+	public ResponseEntity<PrimeResponse> generatePrimesFunction(
+			 @Valid PrimeNumber number,
 			@RequestParam(value = "algorithm", required = false, defaultValue = "primes") String algorithm) {
-		switch (algorithm) {
-		case "primes":
-			resList = apiServiceObj.getPrimeNumbers(number);
-			break;
-		case "Eratosthenes":
-			resList = apiServiceObj.getPrimesBySieveofEratosthenes(number);
-			break;
-		case "Atkin":
-			resList = apiServiceObj.getPrimesBySieveOfAtkin(number);
-			break;
-		default:
-			resList = apiServiceObj.getPrimeNumbers(number);
+		try {
+			switch (algorithm) {
+			case "primes":
+				resList = apiServiceObj.getPrimeNumbers(number.getNumber());
+				LOGGER.info("primes algorithm");
+				break;
+			case "Eratosthenes":
+				resList = apiServiceObj.getPrimesBySieveofEratosthenes(number.getNumber());
+				LOGGER.info("Eratosthenes algorithm");
+				break;
+			case "Atkin":
+				resList = apiServiceObj.getPrimesBySieveOfAtkin(number.getNumber());
+				LOGGER.info("Atkin algorithm");
+				break;
+			default:
+				resList = apiServiceObj.getPrimeNumbers(number.getNumber());
+				LOGGER.info("Default algorithm");
+			}
+		} catch (Exception ex) {
+			LOGGER.error("An Exception has been caught" + ex);
 		}
-		HashMap<String, Object> respObj = new HashMap<String, Object>();
-		respObj.put("Initial", number);
-		respObj.put("Primes", resList);
-
-		return new ResponseEntity<Object>(respObj, HttpStatus.OK);
+		response=new PrimeResponse();
+		response.setPrimes(resList);
+		response.setInitial(number.getNumber());
+		
+		return new ResponseEntity<PrimeResponse>(response, HttpStatus.OK);
 	}
 
 }

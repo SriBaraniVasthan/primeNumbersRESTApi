@@ -6,8 +6,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+
+import util.GlobalExceptionHandler;
 
 /*
  * Overriding Service implementation of prime number generations using multiple algorithms, returning a list of prime numbers.
@@ -15,6 +20,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class PrimesApiServiceImpl implements PrimesApiService {
+	private static final Logger LOGGER = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
 	/*
 	 * Sieve of Eratosthenes implementation as default
@@ -25,7 +31,7 @@ public class PrimesApiServiceImpl implements PrimesApiService {
 		if (inputNum < 2) {
 			return Collections.emptyList();
 		}
-
+		LOGGER.info("lambda expression for generating primes");
 		return IntStream.rangeClosed(2, inputNum).filter(n -> isPrimeNumber(n)).boxed().collect(Collectors.toList());
 	}
 
@@ -44,7 +50,7 @@ public class PrimesApiServiceImpl implements PrimesApiService {
 	@Override
 	@Cacheable(key = "#inputNum", value = "primes")
 	public List<Integer> getPrimesBySieveOfAtkin(int inputNum) {
-		
+		LOGGER.info("Calculated prime by Sieve of Atkin");
 		List<Integer> primeList = new ArrayList<Integer>();
 		// 2 and 3 are known to be prime
 		if (inputNum > 2)
@@ -55,9 +61,9 @@ public class PrimesApiServiceImpl implements PrimesApiService {
 
 		// Initializing the sieve of Atkin array with boolean false values
 		boolean sieve[] = new boolean[inputNum + 1];
-
-		for (int i = 0; i <= inputNum; i++)
-			sieve[i] = false;
+		try {
+			for (int i = 0; i <= inputNum; i++)
+				sieve[i] = false;
 
 		for (int x = 1; x * x <= inputNum; x++) {
 			for (int y = 1; y * y <= inputNum; y++) {
@@ -89,9 +95,12 @@ public class PrimesApiServiceImpl implements PrimesApiService {
 		// Adding prime numbers to the list
 		for (int a = 5; a <= inputNum; a++) {
 
-			if (sieve[a]) {
-				primeList.add(a);
+				if (sieve[a]) {
+					primeList.add(a);
+				}
 			}
+		} catch (Exception ex) {
+			LOGGER.error("An Exception has been caught" + ex);
 		}
 		return primeList;
 	}
@@ -102,26 +111,29 @@ public class PrimesApiServiceImpl implements PrimesApiService {
 	@Override
 	@Cacheable(key = "#inputNum", value = "primes")
 	public List<Integer> getPrimesBySieveofEratosthenes(int inputNum) {
+		LOGGER.info("Calculated prime by Sieve of Eratosthenes");
 		int num = inputNum, i;
 		List<Integer> primeList = new ArrayList<Integer>();
 		boolean[] a = new boolean[num + 1];
 		Arrays.fill(a, true);
-
-		// Setting the Boolean to false 0 and 1 are not prime
-		a[0] = false;
-		a[1] = false;
-		for (i = 2; i <= Math.sqrt(num); i++)
-			// Checking if the number is prime
-			if (a[i])
-				for (int j = i * i; j <= num; j += i) {
-					a[j] = false;
+		try {
+			// Setting the Boolean to false 0 and 1 are not prime
+			a[0] = false;
+			a[1] = false;
+			for (i = 2; i <= Math.sqrt(num); i++)
+				// Checking if the number is prime
+				if (a[i])
+					for (int j = i * i; j <= num; j += i) {
+						a[j] = false;
+					}
+			for (i = 0; i <= num; i++) {
+				// Adding prime numbers to the list
+				if (a[i]) {
+					primeList.add(i);
 				}
-		for (i = 0; i <= num; i++) {
-
-			// Adding prime numbers to the list
-			if (a[i]) {
-				primeList.add(i);
 			}
+		} catch (Exception ex) {
+			LOGGER.error("An Exception has been caught" + ex);
 		}
 		return primeList;
 	}
