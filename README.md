@@ -1,4 +1,4 @@
-# primeNumbersRESTApi
+# Prime Number Generator
 1. The Spring boot project is developed with Java 17.
 2. The project is built, test and run using Maven.
 3. The service is hosted in a container as a serverless GCP application.( https://primesrestapi-oryc3brmdq-nw.a.run.app/primes/200)
