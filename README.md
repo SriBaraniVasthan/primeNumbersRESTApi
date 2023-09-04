@@ -12,8 +12,13 @@ https://primesrestapi-oryc3brmdq-nw.a.run.app/primes/200?algorithm=primes
 
 ![Capture](https://github.com/SriBaraniVasthan/primeNumbersRESTApi/assets/63550126/dd726415-0368-45fe-95e7-bf9ed12f465b)
 ![Capture3](https://github.com/SriBaraniVasthan/primeNumbersRESTApi/assets/63550126/b07076d9-fa56-4f77-a617-92c23c8c368b)
+Changing Algorithm as part of Parameter
 ![Capture2](https://github.com/SriBaraniVasthan/primeNumbersRESTApi/assets/63550126/4f8c03a9-dd5a-4e4e-9da9-7ec581a44240)
-![Capture5](https://github.com/SriBaraniVasthan/primeNumbersRESTApi/assets/63550126/8bc4d221-7fc9-4a3a-ade6-f268b633f554)
+
+Request header, Accept=application/json
 ![Capture4](https://github.com/SriBaraniVasthan/primeNumbersRESTApi/assets/63550126/603700b9-eb6f-46e0-8cf1-3d6a9e83a923)
+![Capture5](https://github.com/SriBaraniVasthan/primeNumbersRESTApi/assets/63550126/8bc4d221-7fc9-4a3a-ade6-f268b633f554)
+Google Cloud Platform Stats:
 ![Capture6](https://github.com/SriBaraniVasthan/primeNumbersRESTApi/assets/63550126/701f35b2-0e90-4bf4-bb43-dc0fbd419a0c)
+Test coverage:
 ![Capture7](https://github.com/SriBaraniVasthan/primeNumbersRESTApi/assets/63550126/f9e248d3-1e7e-451d-86c6-be19d20178ac)
