@@ -58,19 +58,6 @@ class RestApplicationTests {
 		checkBody(entity, expected);
 	}
 
-	/*
-	 * @Test public void testStrings() {
-	 * 
-	 * // Test PrimeNumberUtilTest.KNOWN_PRIMES entity =
-	 * restTemplate.getForEntity(baseUrl + "/primes/abc", int[].class);
-	 * assertEquals(HttpStatus., entity.getStatusCode()); }
-	 */
-	/*
-	 * @Test public void firstParameterExceptionTest() { entity =
-	 * restTemplate.getForEntity(baseUrl + "/primes/abc", int[].class); expected =;
-	 * checkBody(entity, expected); }
-	 */
-	
 	private void checkBody(ResponseEntity<int[]> entity, int[] expected) {
 		assertEquals(HttpStatus.OK, entity.getStatusCode());
 		int[] actual = entity.getBody();
