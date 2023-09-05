@@ -18,11 +18,12 @@ https://primesrestapi-oryc3brmdq-nw.a.run.app/primes/200?algorithm=primes
 
 **Request header, Accept=application/json**
 ![Capture5](https://github.com/SriBaraniVasthan/primeNumbersRESTApi/assets/63550126/8bc4d221-7fc9-4a3a-ade6-f268b633f554)
-![Capture4](https://github.com/SriBaraniVasthan/primeNumbersRESTApi/assets/63550126/603700b9-eb6f-46e0-8cf1-3d6a9e83a923)
-
+![Capture9](https://github.com/SriBaraniVasthan/primeNumbersRESTApi/assets/63550126/1a1f8269-c846-4d29-a47e-de949860a1a6)
 
 **Google Cloud Platform Stats:**
 ![Capture6](https://github.com/SriBaraniVasthan/primeNumbersRESTApi/assets/63550126/701f35b2-0e90-4bf4-bb43-dc0fbd419a0c)
 
 **Test coverage:**
 ![Capture7](https://github.com/SriBaraniVasthan/primeNumbersRESTApi/assets/63550126/f9e248d3-1e7e-451d-86c6-be19d20178ac)
+![Capture8](https://github.com/SriBaraniVasthan/primeNumbersRESTApi/assets/63550126/f76563a6-f56a-4a7f-b92f-b246027d83d1)
+![Capture10](https://github.com/SriBaraniVasthan/primeNumbersRESTApi/assets/63550126/0f8ce8a4-4fa7-4ca3-9fb6-cdd7c97070e6)
